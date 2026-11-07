@@ -39,7 +39,7 @@ const tiles: { label: string; icon: IconName; says: string; alt?: string }[] = [
     let flipped = false;
     tile.addEventListener('click', () => {
       tile.classList.add('pressed');
-      const ms = 104 + Math.round(Math.random() * 140);
+      const ms = 168 + Math.round(Math.random() * 70);
       window.setTimeout(() => {
         tile.classList.remove('pressed');
         const says = flipped && tile.dataset.alt ? tile.dataset.alt : tile.dataset.says;

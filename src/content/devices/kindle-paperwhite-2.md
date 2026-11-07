@@ -8,10 +8,10 @@ input: [touch]
 method: jailbreak
 prompt: kindle
 status: verified
-latency_ms: 136
+latency_ms: 200
 computers: [macos, linux]
 contributors: [enzovalley9]
-summary: The first one. Jailbroken with WinterBreak2, a LuaJIT client on the Kindle, about 140 ms from tap to app.
+summary: The first one. Jailbroken with WinterBreak2, a LuaJIT client on the Kindle, about 200 ms from tap to app.
 updated: 2026-11-07
 ---
 
@@ -28,7 +28,7 @@ The sixth generation Paperwhite, Wi-Fi only. This project started with one: its 
 | Drawing | The jailbreak's FBInk; KOReader's build has no image support |
 | Screen | 758 x 1024, 8 bits per pixel, 212 dpi |
 | Touch | `/dev/input/event1` (`cyttsp4_mt`), multitouch type B, X 0 to 757 and Y 0 to 1023, 1:1 with pixels |
-| Speed | 136 ms from the computer getting the tap to the browser opening; 130 to 240 ms for most actions |
+| Speed | 170 to 235 ms from tap to a keyboard shortcut firing on the Mac. Opening an app takes 136 ms once the tap reaches the Mac. AppleScript actions like play/pause take 330 to 430 ms. |
 
 ## Gotchas
 

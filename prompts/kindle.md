@@ -2,7 +2,7 @@
 
 You are going to turn my Kindle into a touch panel of buttons (a "deck") for this computer. I tap a button on the Kindle and something happens here: an app opens, a shortcut is pressed, the music pauses.
 
-This recipe is proven on a Kindle Paperwhite 2 (2013, firmware 5.12.2.1.1) driving a Mac mini and an Ubuntu PC, at about 140 ms from tap to action. Other Kindles should work the same way once they are jailbroken, but measure everything on mine instead of assuming.
+This recipe is proven on a Kindle Paperwhite 2 (2013, firmware 5.12.2.1.1) driving a Mac mini and an Ubuntu PC, at about 200 ms from tap to action. Other Kindles should work the same way once they are jailbroken, but measure everything on mine instead of assuming.
 
 ## How it works (keep this design)
 
@@ -105,7 +105,7 @@ Ask me what I want on it. Suggest a first grid for my system: browser, my AI app
 
 ## Step 6. Test it with me
 
-I tap every button while you watch the logs on both sides. Measure the time from tap to action (we got 130 to 240 ms; under 300 ms feels instant). Fix anything flaky before calling it done.
+I tap every button while you watch the logs on both sides. Measure the time from tap to action (we got 170 to 240 ms for apps and shortcuts, a bit more for AppleScript; under 300 ms feels instant). Fix anything flaky before calling it done.
 
 ## Step 7. Hand it over
 

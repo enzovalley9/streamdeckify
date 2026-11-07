@@ -21,7 +21,7 @@ const svg = `<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">
   <text x="92" y="268" font-family="Georgia, serif" font-size="82" font-weight="700" fill="#141414">Any screen</text>
   <text x="92" y="360" font-family="Georgia, serif" font-size="82" font-weight="700" fill="#141414">can be a</text>
   <text x="92" y="452" font-family="Georgia, serif" font-size="82" font-style="italic" fill="#141414">Stream Deck.</text>
-  <text x="96" y="526" font-family="Menlo, monospace" font-size="21" fill="#77756d">One prompt. An old Kindle. 136 ms per tap.</text>
+  <text x="96" y="526" font-family="Menlo, monospace" font-size="21" fill="#77756d">One prompt. An old Kindle. 200 ms a tap.</text>
   <rect x="${bx}" y="${by}" width="${bezelW}" height="${bezelH}" rx="38" fill="#1c1c1b"/>
   <rect x="${bx + bezelW / 2 - 26}" y="${by + bezelH - 36}" width="52" height="6" rx="3" fill="#3a3a38"/>
 </svg>`;

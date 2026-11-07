@@ -34,7 +34,7 @@ const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
           <button class="btn" type="button" data-copy="#one-kindle"><Icon name="copy" /><span>Copy the Kindle prompt</span></button>
           <a class="btn ghost" href="#prompts">Other screens <Icon name="down" /></a>
         </div>
-        <p class="proof">Built first on a 2013 Kindle Paperwhite. 136 ms from tap to app.</p>
+        <p class="proof">Built first on a 2013 Kindle Paperwhite. About 200 ms from tap to app.</p>
       </div>
       <DeckDemo />
     </div>
@@ -42,7 +42,7 @@ const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
 
   <div class="wrap">
     <div class="stats">
-      <div class="stat"><b>136 ms</b><span>from tap to app on a 2013 Kindle</span></div>
+      <div class="stat"><b>200 ms</b><span>or so, from tap to app on a 2013 Kindle</span></div>
       <div class="stat"><b>{PROMPTS.length}</b><span>prompts, one of them for any screen</span></div>
       <div class="stat"><b>{verified}</b><span>{plural(verified, 'screen verified so far', 'screens verified so far')}</span></div>
       <div class="stat"><b>0</b><span>servers in the cloud</span></div>
@@ -95,7 +95,7 @@ const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
         <div class="node"><Icon name="ereader" /><b>Your old screen</b><span>shows the panel, says where you tapped</span></div>
         <div class="wire">Wi-Fi + token<br />tap at 412, 690</div>
         <div class="node"><Icon name="computer" /><b>Your computer</b><span>a tiny server with a fixed list of actions</span></div>
-        <div class="wire">about 140 ms</div>
+        <div class="wire">about 200 ms</div>
         <div class="node"><Icon name="sparkle" /><b>The action</b><span>an app, a shortcut, music, lights</span></div>
       </div>
     </div>

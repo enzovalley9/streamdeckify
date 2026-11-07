@@ -17,7 +17,7 @@ Free, open source, nothing in the cloud.</p>
 
 ## Why
 
-My Kindle Paperwhite is from 2013. The battery is tired and I read on my phone these days, so it was headed for a drawer. One night I asked Claude Code to turn it into a Stream Deck for my Mac. We jailbroke it together, step by step, and it wrote a little server for the Mac and a client for the Kindle. Now it sits under my monitor opening apps, starting dictation and pausing the music, 136 ms after I tap it.
+My Kindle Paperwhite is from 2013. The battery is tired and I read on my phone these days, so it was headed for a drawer. One night I asked Claude Code to turn it into a Stream Deck for my Mac. We jailbroke it together, step by step, and it wrote a little server for the Mac and a client for the Kindle. Now it sits under my monitor opening apps, starting dictation and pausing the music, about a fifth of a second after I tap it.
 
 This repo is that prompt, cleaned up so anyone can do the same with whatever screen they have lying around. And because every screen is different, the list of devices is written by the people who got theirs working.
 
@@ -56,7 +56,7 @@ Every device has its own page with what worked, what didn't and how fast it is: 
 
 | Device | Status | How | Tap to action |
 | --- | --- | --- | --- |
-| [Kindle Paperwhite 2 (2013)](src/content/devices/kindle-paperwhite-2.md) | verified | jailbreak + KOReader's LuaJIT | 136 ms |
+| [Kindle Paperwhite 2 (2013)](src/content/devices/kindle-paperwhite-2.md) | verified | jailbreak + KOReader's LuaJIT | about 200 ms |
 
 Wanted, be the first: Kindle 4 or Kindle Keyboard (no touch, 5-way pad), Kobo, old iPads, Android phones and tablets, Android TV with the remote, a Raspberry Pi with a screen, and yes, a Steam Deck.
 
