@@ -41,6 +41,10 @@ The labeler adds `device`, `wall`, `prompt`, `site` and `needs-maintainer` by pa
 
 When articles and videos appear, list them in `docs/PRESS.md` by country, with the date, and only if the link opens and says what we claim. Include the critical ones too. Ask writers to open an issue with their link.
 
+## Releases
+
+After a round that adds screens or decks, cut a GitHub release. Put the numbers in the title, like "12 screens, built by 9 people", and thank every person by handle and pull request in the notes. Count the files to get the numbers; never type them from memory.
+
 ## When it gets busy
 
 If pull requests outgrow the rounds (a few hundred open at once), add an automated reviewer that only suggests and never merges, fed with these verdicts and with past decisions. Until then, the forms, the checks and the labeler do the filtering.
