@@ -1,0 +1,20 @@
+{
+  "name": "streamdeckify",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Any screen can be a Stream Deck. One prompt for your AI coding agent turns an old Kindle, tablet, phone or TV into a button panel for your computer.",
+  "license": "MIT",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@fontsource-variable/literata": "^5.3.0",
+    "astro": "^7.4.7"
+  }
+}

@@ -1,0 +1,32 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+
+interface Props {
+  deck: CollectionEntry<'decks'>;
+}
+
+const { deck } = Astro.props;
+const d = deck.data;
+const OS = { macos: 'macOS', linux: 'Linux', windows: 'Windows' } as const;
+const by = d.github ? `https://github.com/${d.github}` : d.link;
+---
+
+<figure class="deck-card">
+  {
+    d.photo_kind === 'screenshot' ? (
+      <div class="bezel">
+        <Image src={d.photo} alt={d.photo_alt} width={520} />
+      </div>
+    ) : (
+      <div class="shot">
+        <Image src={d.photo} alt={d.photo_alt} width={720} />
+      </div>
+    )
+  }
+  <figcaption>
+    <b>{d.title}</b>
+    {d.device} driving {OS[d.computer]}. By {by ? <a href={by}>{d.author}</a> : d.author}
+    {d.link && d.github && <>, <a href={d.link}>see the post</a></>}.
+  </figcaption>
+</figure>

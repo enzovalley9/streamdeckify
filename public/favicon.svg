@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    rect { fill: none; stroke: #141414; stroke-width: 2.2; }
+    rect.on { fill: #141414; }
+    @media (prefers-color-scheme: dark) { rect { stroke: #ecebe5; } rect.on { fill: #ecebe5; } }
+  </style>
+  <rect x="2" y="2" width="8" height="8" rx="2"/><rect class="on" x="12" y="2" width="8" height="8" rx="2"/><rect x="22" y="2" width="8" height="8" rx="2"/>
+  <rect x="2" y="12" width="8" height="8" rx="2"/><rect x="12" y="12" width="8" height="8" rx="2"/><rect x="22" y="12" width="8" height="8" rx="2"/>
+  <rect x="2" y="22" width="8" height="8" rx="2"/><rect x="12" y="22" width="8" height="8" rx="2"/><rect x="22" y="22" width="8" height="8" rx="2"/>
+</svg>

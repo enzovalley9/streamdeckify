@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import DeviceCard from '../../components/DeviceCard.astro';
+import Icon from '../../components/Icon.astro';
+import { WANTED } from '../../lib/wanted';
+import { NEW_ISSUE, REPO_URL } from '../../site';
+
+const STATUS_ORDER = { verified: 0, works: 1, experimental: 2 } as const;
+const devices = (await getCollection('devices')).sort(
+  (a, b) => STATUS_ORDER[a.data.status] - STATUS_ORDER[b.data.status] || a.data.name.localeCompare(b.data.name),
+);
+---
+
+<Base title="Devices" description="Every screen that has been turned into a deck, with what worked, what didn't and how fast it is.">
+  <div class="wrap">
+    <header class="page-head">
+      <p class="crumbs"><a href="/">Home</a> / Devices</p>
+      <h1>Devices</h1>
+      <p class="lede">
+        {devices.length} {devices.length === 1 ? 'screen' : 'screens'} so far. <b>Verified</b> means it has been
+        built and used for real; <b>works</b> means one person got it going; <b>experimental</b> means it needs testers.
+      </p>
+    </header>
+
+    <div class="grid-cards">
+      {devices.map((device) => <DeviceCard device={device} />)}
+    </div>
+
+    <div class="subhead">
+      <h3>Wanted: be the first</h3>
+      <a href={`${REPO_URL}/blob/main/CONTRIBUTING.md#add-a-device`}>How to add one</a>
+    </div>
+    <div class="grid-cards" style="margin-bottom: 96px">
+      {
+        WANTED.map((w) => (
+          <a class="card wanted" href={NEW_ISSUE('add-device.yml', `Device: ${w.name}`)}>
+            <div class="top">
+              <Icon name={w.icon} />
+            </div>
+            <h3>{w.name}</h3>
+            <p>{w.why}</p>
+            <span class="go">I'll try it <Icon name="arrow" /></span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</Base>

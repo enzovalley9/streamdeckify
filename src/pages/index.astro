@@ -1,0 +1,271 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import DeckDemo from '../components/DeckDemo.astro';
+import PromptTabs from '../components/PromptTabs.astro';
+import DeviceCard from '../components/DeviceCard.astro';
+import DeckCard from '../components/DeckCard.astro';
+import Icon from '../components/Icon.astro';
+import { PROMPTS } from '../lib/prompts';
+import { WANTED } from '../lib/wanted';
+import { REPO_URL, NEW_ISSUE, HASHTAG } from '../site';
+
+const STATUS_ORDER = { verified: 0, works: 1, experimental: 2 } as const;
+const devices = (await getCollection('devices')).sort(
+  (a, b) => STATUS_ORDER[a.data.status] - STATUS_ORDER[b.data.status] || a.data.name.localeCompare(b.data.name),
+);
+const decks = (await getCollection('decks')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const verified = devices.filter((d) => d.data.status === 'verified').length;
+const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
+---
+
+<Base>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow"><span class="dot"></span>Free · Open source · No cloud</span>
+        <h1>Any screen can be a <em>Stream&nbsp;Deck.</em></h1>
+        <p class="lede">
+          That old Kindle in your drawer is a button panel for your computer now. Paste one prompt into Claude Code,
+          Codex or Gemini CLI and your agent builds the whole thing: the panel, the buttons and the tiny server that
+          runs them.
+        </p>
+        <div class="cta-row">
+          <button class="btn" type="button" data-copy="#one-kindle"><Icon name="copy" /><span>Copy the Kindle prompt</span></button>
+          <a class="btn ghost" href="#prompts">Other screens <Icon name="down" /></a>
+        </div>
+        <p class="proof">Built first on a 2013 Kindle Paperwhite. 136 ms from tap to app.</p>
+      </div>
+      <DeckDemo />
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat"><b>136 ms</b><span>from tap to app on a 2013 Kindle</span></div>
+      <div class="stat"><b>{PROMPTS.length}</b><span>prompts, one of them for any screen</span></div>
+      <div class="stat"><b>{verified}</b><span>{plural(verified, 'screen verified so far', 'screens verified so far')}</span></div>
+      <div class="stat"><b>0</b><span>servers in the cloud</span></div>
+    </div>
+  </div>
+
+  <section class="band" id="story">
+    <div class="wrap story">
+      <span class="eyebrow"><span class="dot"></span>Why this exists</span>
+      <blockquote>
+        <p>
+          My Kindle Paperwhite is from 2013. The battery is tired and I read on my phone these days, so it was headed
+          for a drawer. One night I asked Claude Code to turn it into a Stream Deck for my Mac. We jailbroke it
+          together, step by step, and it wrote a little server for the Mac and a client for the Kindle.
+        </p>
+        <p>
+          Now it sits under my monitor opening apps, starting dictation and pausing the music, a blink after I tap it.
+          This site is that prompt, so you can do the same with whatever screen you have lying around.
+        </p>
+        <cite>Enzo, Madrid</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <section class="band" id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><span class="dot"></span>How it works</span>
+        <h2>One prompt. Your agent does the rest.</h2>
+        <p>No app to install, no account, no subscription. Your coding agent builds it on your machine and explains every step before it takes it.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <span class="num">01</span>
+          <h3>Pick your screen</h3>
+          <p>A Kindle, an old iPad, a phone, a TV. If it has a screen and Wi-Fi, it's a candidate.</p>
+        </div>
+        <div class="step">
+          <span class="num">02</span>
+          <h3>Paste the prompt</h3>
+          <p>Into Claude Code, Codex, Gemini CLI or any agent that can run commands on your computer. It asks what you have, then builds it with you.</p>
+        </div>
+        <div class="step">
+          <span class="num">03</span>
+          <h3>Tap</h3>
+          <p>Open an app, press a shortcut, pause the music, switch the lights. Whatever you put on the buttons.</p>
+        </div>
+      </div>
+      <div class="flow" aria-label="How a tap travels">
+        <div class="node"><Icon name="ereader" /><b>Your old screen</b><span>shows the panel, says where you tapped</span></div>
+        <div class="wire">Wi-Fi + token<br />tap at 412, 690</div>
+        <div class="node"><Icon name="computer" /><b>Your computer</b><span>a tiny server with a fixed list of actions</span></div>
+        <div class="wire">about 140 ms</div>
+        <div class="node"><Icon name="sparkle" /><b>The action</b><span>an app, a shortcut, music, lights</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="prompts">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><span class="dot"></span>The prompts</span>
+        <h2>Copy, paste, follow along.</h2>
+        <p>
+          The short version tells your agent to fetch the full recipe from this site, so it always gets the latest one.
+          No web access? Copy the full version instead. Read it first if you like: it's plain English.
+        </p>
+      </div>
+      <PromptTabs />
+    </div>
+  </section>
+
+  <section class="band" id="no-touch">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><span class="dot"></span>Even the ones you can't touch</span>
+        <h2>No touchscreen? Still a deck.</h2>
+        <p>If you can point at a button and say "this one", it works. The prompt for other screens builds a panel you drive like a TV menu.</p>
+      </div>
+      <div class="inputs">
+        <div class="input-card"><Icon name="touch" /><h3>Touch</h3><p>Kindles, tablets, phones, the screen in your car.</p></div>
+        <div class="input-card"><Icon name="remote" /><h3>Remote</h3><p>Arrows to move, OK to press. Smart TVs and consoles.</p></div>
+        <div class="input-card"><Icon name="dpad" /><h3>Buttons</h3><p>A 5-way pad or page keys, like older Kindles and e-readers.</p></div>
+        <div class="input-card"><Icon name="keyboard" /><h3>Keyboard</h3><p>Number keys 1 to 9 press the buttons. Anything with keys works.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="devices">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><span class="dot"></span>Devices</span>
+        <h2>Screens that are decks now.</h2>
+        <p>Each one is a page anyone can improve. Got it working on something new? Add it, and the next person with the same screen is done in minutes.</p>
+      </div>
+      <div class="grid-cards">
+        {devices.map((device) => <DeviceCard device={device} />)}
+      </div>
+      <div class="subhead">
+        <h3>Wanted: be the first</h3>
+        <a href="/devices/">All devices</a>
+      </div>
+      <div class="grid-cards">
+        {
+          WANTED.map((w) => (
+            <a class="card wanted" href={NEW_ISSUE('add-device.yml', `Device: ${w.name}`)}>
+              <div class="top">
+                <Icon name={w.icon} />
+              </div>
+              <h3>{w.name}</h3>
+              <p>{w.why}</p>
+              <span class="go">I'll try it <Icon name="arrow" /></span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="wall">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><span class="dot"></span>The wall</span>
+        <h2>Decks in the wild.</h2>
+        <p>Real panels on real desks. Built one? Put it up here.</p>
+      </div>
+      <div class="wall">
+        {decks.map((deck) => <DeckCard deck={deck} />)}
+        <div class="add-card">
+          <Icon name="photo" />
+          <h3>Yours goes here</h3>
+          <p>Add a photo with a pull request, or post it with #{HASHTAG} and we'll put it up for you.</p>
+          <a class="btn small" href={NEW_ISSUE('share-deck.yml', 'My deck: ')}>Share your deck</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="faq">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><span class="dot"></span>Questions</span>
+        <h2>The honest answers.</h2>
+      </div>
+      <div class="faq">
+        <details>
+          <summary>Is this the Elgato Stream Deck?</summary>
+          <p>
+            No. This is an independent, free project with nothing to do with Elgato or Corsair. "Stream Deck" is just
+            the best way to describe what you end up with: a panel of buttons that make things happen on your computer.
+            If you want the real one, it's great, go buy it.
+          </p>
+        </details>
+        <details>
+          <summary>Do I have to jailbreak my Kindle?</summary>
+          <p>
+            For the best result, yes: full screen and instant taps. Your agent walks you through it using the community's
+            guides at kindlemodding.org, and you do the steps on the Kindle yourself. We never host jailbreak files. If you'd
+            rather not, the no-jailbreak prompt uses the Kindle's own web browser. It's slower, but nothing on the Kindle changes.
+          </p>
+        </details>
+        <details>
+          <summary>Which AI agents work?</summary>
+          <p>
+            Any coding agent that can run commands on your computer: Claude Code, Codex, Gemini CLI and the like. The
+            prompts are plain text, so you can read them before you paste them.
+          </p>
+        </details>
+        <details>
+          <summary>Is it safe?</summary>
+          <p>
+            Everything stays on your Wi-Fi. The screen only reports where you tapped; your computer runs actions from a
+            fixed list that you approve, behind a random token. The prompts tell the agent to explain each step and ask
+            before installing anything or touching settings. Still, it's your computer: read what the agent proposes.
+          </p>
+        </details>
+        <details>
+          <summary>What can a button do?</summary>
+          <p>
+            Open apps and websites, press keyboard shortcuts, play and pause music, start dictation, run a macOS Shortcut
+            or a script, flip a Home Assistant scene, switch OBS scenes. If your computer can do it, a button can.
+          </p>
+        </details>
+        <details>
+          <summary>Will it break my device?</summary>
+          <p>
+            The deck itself is temporary: tap Exit or restart, and your device is back to normal. Jailbreaking carries some
+            risk and can void your warranty, which is why the prompt backs up your Kindle first and sticks to the official
+            community guides.
+          </p>
+        </details>
+        <details>
+          <summary>How much does it cost?</summary>
+          <p>Nothing. It's MIT licensed. The only cost is whatever your AI agent charges you for the session.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="contribute">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><span class="dot"></span>Make it better</span>
+        <h2>This site is a pull request away.</h2>
+        <p>Everything here lives on GitHub: the prompts, the device pages, the wall. Change something, open a pull request, and once it's merged the site updates by itself.</p>
+      </div>
+      <div class="contrib">
+        <a class="card" href={`${REPO_URL}/blob/main/CONTRIBUTING.md#add-a-device`}>
+          <div class="top"><Icon name="ereader" /></div>
+          <h3>Add your device</h3>
+          <p>One Markdown file with what worked, what didn't and how fast it is.</p>
+        </a>
+        <a class="card" href={`${REPO_URL}/blob/main/CONTRIBUTING.md#show-your-deck`}>
+          <div class="top"><Icon name="photo" /></div>
+          <h3>Show your deck</h3>
+          <p>A photo and three lines. It goes straight onto the wall.</p>
+        </a>
+        <a class="card" href={`${REPO_URL}/blob/main/CONTRIBUTING.md#improve-a-prompt`}>
+          <div class="top"><Icon name="pr" /></div>
+          <h3>Improve a prompt</h3>
+          <p>Found a gotcha the hard way? Save the next person the trouble.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>

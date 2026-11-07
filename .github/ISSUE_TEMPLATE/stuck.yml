@@ -1,0 +1,33 @@
+name: The prompt got stuck
+description: Your agent hit a wall following one of the prompts.
+title: "Stuck: "
+labels: [help]
+body:
+  - type: input
+    id: device
+    attributes:
+      label: Device and firmware
+    validations:
+      required: true
+  - type: dropdown
+    id: prompt
+    attributes:
+      label: Prompt
+      options:
+        - Kindle
+        - Kindle, no jailbreak
+        - Any other screen
+    validations:
+      required: true
+  - type: input
+    id: agent
+    attributes:
+      label: AI agent and computer
+      placeholder: Claude Code on macOS 26
+  - type: textarea
+    id: what
+    attributes:
+      label: Which step, and what happened
+      description: Paste the relevant output. Remove tokens, IPs and anything private first.
+    validations:
+      required: true

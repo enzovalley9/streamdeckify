@@ -1,0 +1,38 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon, { type IconName } from './Icon.astro';
+
+interface Props {
+  device: CollectionEntry<'devices'>;
+}
+
+const { device } = Astro.props;
+const d = device.data;
+const ICONS: Record<typeof d.family, IconName> = {
+  kindle: 'ereader',
+  kobo: 'ereader',
+  'e-reader': 'ereader',
+  tablet: 'tablet',
+  phone: 'phone',
+  tv: 'tv',
+  console: 'gamepad',
+  'single-board': 'board',
+  other: 'sparkle',
+};
+---
+
+<a class="card" href={`/devices/${device.id}/`}>
+  <div class="top">
+    <Icon name={ICONS[d.family]} />
+    <span class:list={['badge', d.status]}>{d.status}</span>
+  </div>
+  <h3>{d.name}</h3>
+  <p>{d.summary}</p>
+  <div class="tags">
+    {d.year && <span class="tag">{d.year}</span>}
+    <span class="tag">{d.screen}</span>
+    {d.input.map((i) => <span class="tag">{i}</span>)}
+    <span class="tag">{d.method}</span>
+    {d.latency_ms && <span class="tag">{d.latency_ms} ms</span>}
+  </div>
+</a>

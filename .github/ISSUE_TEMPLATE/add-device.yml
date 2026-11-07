@@ -1,0 +1,72 @@
+name: Add a device
+description: You turned a screen into a deck, or tried to. Tell us and we'll add it to the list.
+title: "Device: "
+labels: [device]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks! Facts beat adjectives. Rather open a pull request yourself? See CONTRIBUTING.md.
+  - type: input
+    id: device
+    attributes:
+      label: Device
+      description: Brand, model and year.
+      placeholder: Kindle Paperwhite 2 (2013)
+    validations:
+      required: true
+  - type: input
+    id: firmware
+    attributes:
+      label: OS or firmware version
+  - type: dropdown
+    id: prompt
+    attributes:
+      label: Which prompt did you start from?
+      options:
+        - Kindle
+        - Kindle, no jailbreak
+        - Any other screen
+        - My own
+    validations:
+      required: true
+  - type: dropdown
+    id: result
+    attributes:
+      label: How did it go?
+      options:
+        - It works
+        - It partly works
+        - It didn't work
+    validations:
+      required: true
+  - type: input
+    id: agent
+    attributes:
+      label: AI agent
+      placeholder: Claude Code, Codex, Gemini CLI...
+  - type: dropdown
+    id: computer
+    attributes:
+      label: Computer
+      multiple: true
+      options:
+        - macOS
+        - Linux
+        - Windows
+  - type: textarea
+    id: notes
+    attributes:
+      label: What worked, what didn't, the gotchas
+      description: Screen size, how you press things, the method, how fast a tap is, what you had to fix.
+    validations:
+      required: true
+  - type: textarea
+    id: photo
+    attributes:
+      label: Photo (optional)
+      description: Drag an image here. It might end up on the wall.
+  - type: input
+    id: credit
+    attributes:
+      label: How should we credit you?
+      description: A GitHub username, or a name and a link.

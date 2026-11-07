@@ -1,0 +1,95 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import DeckCard from '../../components/DeckCard.astro';
+import Icon from '../../components/Icon.astro';
+import { promptById } from '../../lib/prompts';
+import { REPO_URL } from '../../site';
+
+export async function getStaticPaths() {
+  const devices = await getCollection('devices');
+  return devices.map((device) => ({ params: { id: device.id }, props: { device } }));
+}
+
+interface Props {
+  device: CollectionEntry<'devices'>;
+}
+
+const { device } = Astro.props;
+const d = device.data;
+const { Content } = await render(device);
+const prompt = promptById(d.prompt)!;
+const decks = (await getCollection('decks')).filter((deck) => deck.data.recipe?.id === device.id);
+const OS = { macos: 'macOS', linux: 'Linux', windows: 'Windows' } as const;
+const editUrl = `${REPO_URL}/edit/main/${device.filePath}`;
+---
+
+<Base title={d.name} description={d.summary}>
+  <div class="wrap">
+    <header class="page-head">
+      <p class="crumbs"><a href="/">Home</a> / <a href="/devices/">Devices</a> / {d.name}</p>
+      <h1>{d.name}</h1>
+      <p class="lede">{d.summary}</p>
+      <dl class="facts">
+        <div><dt>Status</dt><dd><span class:list={['badge', d.status]}>{d.status}</span></dd></div>
+        <div><dt>Made by</dt><dd>{d.brand}{d.year && `, ${d.year}`}</dd></div>
+        <div><dt>Screen</dt><dd>{d.screen}</dd></div>
+        <div><dt>Input</dt><dd>{d.input.join(', ')}</dd></div>
+        <div><dt>Method</dt><dd>{d.method}</dd></div>
+        <div><dt>Computers</dt><dd>{d.computers.map((c) => OS[c]).join(', ')}</dd></div>
+        {d.latency_ms && <div><dt>Tap to action</dt><dd>{d.latency_ms} ms</dd></div>}
+        <div><dt>Updated</dt><dd>{d.updated.toISOString().slice(0, 10)}</dd></div>
+      </dl>
+      <div class="cta-row" style="margin-top: 0">
+        <button class="btn" type="button" data-copy-text={prompt.oneLiner}><Icon name="copy" /><span>Copy the {prompt.tab} prompt</span></button>
+        <a class="btn ghost" href={`/prompts/${prompt.id}.md`}>Read the recipe</a>
+      </div>
+    </header>
+
+    <article class="prose">
+      <Content />
+      <p>
+        Contributors:{' '}
+        {d.contributors.map((c, i) => (
+          <>
+            {i > 0 && ', '}
+            <a href={`https://github.com/${c}`}>@{c}</a>
+          </>
+        ))}. Something wrong or missing? <a href={editUrl}>Edit this page on GitHub</a>.
+      </p>
+    </article>
+
+    {
+      decks.length > 0 && (
+        <section style="padding: 56px 0 96px">
+          <h2 style="font-size: 1.8rem; margin-bottom: 24px">Decks built on this</h2>
+          <div class="wall">
+            {decks.map((deck) => (
+              <DeckCard deck={deck} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </div>
+</Base>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-text]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const label = btn.querySelector('span') ?? btn;
+      const before = label.textContent;
+      try {
+        await navigator.clipboard.writeText(btn.dataset.copyText ?? '');
+        label.textContent = 'Copied. Now paste it into your agent';
+      } catch {
+        label.textContent = 'Could not copy. Open the recipe instead';
+      }
+      btn.classList.add('is-done');
+      window.setTimeout(() => {
+        btn.classList.remove('is-done');
+        label.textContent = before;
+      }, 2200);
+    });
+  });
+</script>

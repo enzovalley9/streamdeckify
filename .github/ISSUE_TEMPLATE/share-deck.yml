@@ -1,0 +1,51 @@
+name: Share your deck
+description: Show us your deck and we'll put it on the wall for you.
+title: "My deck: "
+labels: [wall]
+body:
+  - type: textarea
+    id: photo
+    attributes:
+      label: Photo
+      description: Drag your photo here. Only photos you took, with nothing private on screen.
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: What is it?
+      placeholder: An old iPad 2 under my monitor
+    validations:
+      required: true
+  - type: dropdown
+    id: computer
+    attributes:
+      label: What does it control?
+      options:
+        - macOS
+        - Linux
+        - Windows
+    validations:
+      required: true
+  - type: input
+    id: buttons
+    attributes:
+      label: What's on the buttons? (optional)
+  - type: input
+    id: link
+    attributes:
+      label: Link to your post about it (optional)
+  - type: input
+    id: credit
+    attributes:
+      label: How should we credit you?
+      description: A GitHub username, or a name and a link.
+    validations:
+      required: true
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: Permission
+      options:
+        - label: I took this photo and I'm happy for it to appear on the website.
+          required: true

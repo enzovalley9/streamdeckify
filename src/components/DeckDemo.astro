@@ -1,0 +1,51 @@
+---
+import Icon, { type IconName } from './Icon.astro';
+
+const tiles: { label: string; icon: IconName; says: string; alt?: string }[] = [
+  { label: 'Browser', icon: 'globe', says: 'Opened your browser' },
+  { label: 'Claude', icon: 'sparkle', says: 'Opened Claude' },
+  { label: 'Terminal', icon: 'terminal', says: 'Opened a terminal' },
+  { label: 'Messages', icon: 'chat', says: 'Brought your chat tab to the front' },
+  { label: 'Dictate', icon: 'mic', says: 'Started dictation', alt: 'Stopped dictation' },
+  { label: 'Music', icon: 'music', says: 'Opened your music app' },
+  { label: 'Play/Pause', icon: 'playpause', says: 'Paused the music', alt: 'Music playing again' },
+  { label: 'Lights', icon: 'bulb', says: 'Desk lights on', alt: 'Desk lights off' },
+  { label: 'Go live', icon: 'video', says: 'OBS switched to the live scene' },
+  { label: 'Screenshot', icon: 'camera', says: 'Screenshot saved to the desktop' },
+  { label: 'Lock', icon: 'lock', says: 'Screen locked' },
+  { label: 'Exit', icon: 'exit', says: 'Back to the Kindle home screen' },
+];
+---
+
+<div class="device-wrap">
+  <div class="device" role="group" aria-label="Demo: a Kindle showing twelve buttons. Try them.">
+    <div class="screen">
+      {
+        tiles.map((t) => (
+          <button class="tile" type="button" data-says={t.says} data-alt={t.alt}>
+            <Icon name={t.icon} />
+            <span>{t.label}</span>
+          </button>
+        ))
+      }
+    </div>
+  </div>
+  <p class="device-log" aria-live="polite">Go on, tap one. This Kindle is a demo; the real one runs a Mac.</p>
+</div>
+
+<script>
+  const log = document.querySelector<HTMLElement>('.device-log');
+  document.querySelectorAll<HTMLButtonElement>('.screen .tile').forEach((tile) => {
+    let flipped = false;
+    tile.addEventListener('click', () => {
+      tile.classList.add('pressed');
+      const ms = 104 + Math.round(Math.random() * 140);
+      window.setTimeout(() => {
+        tile.classList.remove('pressed');
+        const says = flipped && tile.dataset.alt ? tile.dataset.alt : tile.dataset.says;
+        if (tile.dataset.alt) flipped = !flipped;
+        if (log) log.textContent = `› ${says} · ${ms} ms`;
+      }, 170);
+    });
+  });
+</script>

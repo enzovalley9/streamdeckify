@@ -1,0 +1,109 @@
+---
+import Icon from './Icon.astro';
+import { PROMPTS } from '../lib/prompts';
+---
+
+<div class="prompts">
+  <div class="tabs" role="tablist" aria-label="Pick your screen">
+    {
+      PROMPTS.map((p, i) => (
+        <button
+          class="tab"
+          type="button"
+          role="tab"
+          id={`tab-${p.id}`}
+          aria-controls={`panel-${p.id}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          tabindex={i === 0 ? 0 : -1}
+        >
+          {p.tab}
+        </button>
+      ))
+    }
+  </div>
+
+  {
+    PROMPTS.map((p, i) => (
+      <div
+        class:list={['prompt-panel', { active: i === 0 }]}
+        role="tabpanel"
+        id={`panel-${p.id}`}
+        aria-labelledby={`tab-${p.id}`}
+        tabindex="0"
+      >
+        <div class="prompt-meta">
+          <h3>{p.tab}</h3>
+          <span class:list={['badge', p.status]}>{p.status}</span>
+          <span>{p.blurb}</span>
+        </div>
+        <p class="oneliner" id={`one-${p.id}`}>{p.oneLiner}</p>
+        <div class="prompt-actions">
+          <button class="btn" type="button" data-copy={`#one-${p.id}`}>
+            <Icon name="copy" />
+            <span>Copy the prompt</span>
+          </button>
+          <button class="btn ghost" type="button" data-copy={`#full-${p.id}`}>
+            Copy the full version
+          </button>
+          <a class="btn ghost" href={`/prompts/${p.id}.md`}>
+            Open as text
+          </a>
+        </div>
+        <details class="full">
+          <summary>Read the whole prompt first ({Math.round(p.text.length / 100) / 10}k characters)</summary>
+          <pre id={`full-${p.id}`}>{p.text}</pre>
+        </details>
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  // Tabs
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('.prompts [role="tab"]'));
+  const select = (tab: HTMLButtonElement) => {
+    tabs.forEach((t) => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls') ?? '')?.classList.toggle('active', on);
+    });
+  };
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => select(tab));
+    tab.addEventListener('keydown', (e) => {
+      const next = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!next) return;
+      const target = tabs[(i + next + tabs.length) % tabs.length];
+      select(target);
+      target.focus();
+    });
+  });
+
+  // Copy buttons (the hero has one too)
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const source = document.querySelector<HTMLElement>(btn.dataset.copy ?? '');
+      if (!source) return;
+      const text = source.textContent ?? '';
+      const label = btn.querySelector('span') ?? btn;
+      const before = label.textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        label.textContent = 'Copied. Now paste it into your agent';
+      } catch {
+        const range = document.createRange();
+        range.selectNodeContents(source);
+        const sel = window.getSelection();
+        sel?.removeAllRanges();
+        sel?.addRange(range);
+        label.textContent = 'Selected. Press Ctrl+C or ⌘C';
+      }
+      btn.classList.add('is-done');
+      window.setTimeout(() => {
+        btn.classList.remove('is-done');
+        label.textContent = before;
+      }, 2200);
+    });
+  });
+</script>
