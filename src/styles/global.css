@@ -404,3 +404,32 @@ a.card:hover { border-color: var(--ink); text-decoration: none; }
 .prose th, .prose td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
 .prose ul, .prose ol { padding-left: 1.25em; }
 .prose li { margin: 0.3em 0; }
+
+/* Which prompt do I need? */
+.check { margin-bottom: 18px; padding: clamp(18px, 3vw, 26px); border: 1.5px dashed var(--line); border-radius: var(--radius); }
+.check label { display: block; font: 600 1rem/1.35 var(--font-sans); margin-bottom: 10px; }
+.check input { width: 100%; font: 400 1.05rem/1.3 var(--font-sans); padding: 0.85em 1em; border: 1.5px solid var(--line); border-radius: var(--radius-sm); background: var(--card); color: var(--ink); appearance: none; -webkit-appearance: none; }
+.check input::placeholder { color: var(--ink-3); }
+.check input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-color: var(--ink); }
+.check-out { margin-top: 18px; }
+.check-out[hidden] { display: none; }
+.check-verdict { margin: 0 0 6px; font: 600 1.25rem/1.3 var(--font-serif); }
+.check-why { margin: 0 0 16px; color: var(--ink-2); max-width: 46em; }
+.check-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.check-actions a[hidden] { display: none; }
+
+/* Press kit */
+.press { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); margin-bottom: 96px; }
+.press h2 { font-size: 1.35rem; margin: 36px 0 12px; }
+.press > div > h2:first-child, .press aside h2:first-child { margin-top: 0; }
+.press p { color: var(--ink-2); }
+.press .facts { margin: 0; }
+.press figure { margin: 0 0 26px; }
+.press figure img { display: block; width: 100%; height: auto; border-radius: var(--radius-sm); border: 1px solid var(--line); }
+.press figcaption { margin-top: 8px; font-size: 0.92rem; color: var(--ink-2); }
+@media (max-width: 760px) {
+  .press { grid-template-columns: 1fr; }
+}
+
+/* Stars next to GitHub in the header, only once there are enough to mean something */
+.nav .gh .count { font: 600 0.78rem/1 var(--font-mono); padding: 3px 7px; margin-left: 6px; border: 1.5px solid currentColor; border-radius: 999px; }

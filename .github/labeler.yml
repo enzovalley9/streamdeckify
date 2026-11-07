@@ -1,0 +1,15 @@
+device:
+  - changed-files:
+      - any-glob-to-any-file: 'src/content/devices/**'
+wall:
+  - changed-files:
+      - any-glob-to-any-file: 'src/content/decks/**'
+prompt:
+  - changed-files:
+      - any-glob-to-any-file: 'prompts/**'
+site:
+  - changed-files:
+      - any-glob-to-any-file: ['src/pages/**', 'src/components/**', 'src/layouts/**', 'src/styles/**', 'public/**']
+needs-maintainer:
+  - changed-files:
+      - any-glob-to-any-file: ['.github/**', 'scripts/**', 'package.json', 'package-lock.json', 'astro.config.ts', 'src/content.config.ts']

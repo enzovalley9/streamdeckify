@@ -1,0 +1,80 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { PROMPTS } from '../lib/prompts';
+import { NAME, REPO_URL, CONTACT_EMAIL, CREATOR, HASHTAG } from '../site';
+
+const devices = await getCollection('devices');
+const decks = (await getCollection('decks')).sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
+const first = devices.find((d) => d.id === 'kindle-paperwhite-2') ?? devices[0];
+const firstDeck = decks[0];
+const verified = devices.filter((d) => d.data.status === 'verified').length;
+const promptNames = PROMPTS.map((p) => p.tab).join('; ');
+const pressIssue = `${REPO_URL}/issues/new?title=${encodeURIComponent('Press: ')}`;
+---
+
+<Base title="Press kit" description={`Facts, images and a contact for anyone writing about ${NAME}.`}>
+  <div class="wrap">
+    <header class="page-head">
+      <p class="crumbs"><a href="/">Home</a> / Press kit</p>
+      <h1>Press kit</h1>
+      <p class="lede">
+        Writing about {NAME} or making a video? Everything on this page is free to use. If something is missing, write
+        to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+      </p>
+    </header>
+
+    <div class="press">
+      <div>
+        <h2>In one paragraph</h2>
+        <p>{NAME} turns old screens into button panels for a computer, like a Stream Deck. You paste one prompt into an AI coding agent such as Claude Code, Codex or Gemini CLI, and the agent builds it with you, step by step: a small server on the computer and a panel on the screen. {`It started with a ${first.data.name} from ${first.data.year} that was headed for a drawer.`} It is free, open source and runs only on the local network. The list of devices grows through pull requests from the people who got theirs working.</p>
+
+        <h2>Facts</h2>
+        <dl class="facts">
+          <div><dt>First device</dt><dd>{first.data.name} ({first.data.year}), {first.data.status}</dd></div>
+          {first.data.latency_ms && <div><dt>Speed</dt><dd>About {first.data.latency_ms} ms from tap to app</dd></div>}
+          <div><dt>Prompts</dt><dd>{PROMPTS.length}: {promptNames}</dd></div>
+          <div><dt>Screens verified</dt><dd>{verified}, and the list is open to anyone</dd></div>
+          <div><dt>Price</dt><dd>Free, MIT license</dd></div>
+          <div><dt>Cloud</dt><dd>None. Local network only, behind a random token</dd></div>
+          <div><dt>Made by</dt><dd>{CREATOR.name} in Madrid, and everyone who sends a pull request</dd></div>
+          <div><dt>Code</dt><dd><a href={REPO_URL}>{REPO_URL.replace('https://', '')}</a></dd></div>
+          <div><dt>Hashtag</dt><dd>#{HASHTAG}</dd></div>
+        </dl>
+
+        <h2>Names</h2>
+        <p>
+          {NAME} is one word. It is an independent community project, not affiliated with, endorsed by or sponsored by
+          Elgato or Corsair. Stream Deck is a trademark of Corsair Memory, Inc., and Kindle is a trademark of
+          Amazon.com, Inc. or its affiliates.
+        </p>
+
+        <h2>Wrote about it?</h2>
+        <p>
+          Thank you. <a href={pressIssue}>Open an issue with the link</a> and it goes on the list, the critical pieces
+          too.
+        </p>
+      </div>
+
+      <aside>
+        <h2>Images</h2>
+        <figure>
+          <a href="/og.png" download><img src="/og.png" width="1200" height="630" alt={`The ${NAME} card: a Kindle showing a grid of big buttons, and the words Any screen can be a Stream Deck.`} loading="lazy" /></a>
+          <figcaption>Social card, 1200 x 630. <a href="/og.png" download>Download</a></figcaption>
+        </figure>
+        {
+          firstDeck && (
+            <figure>
+              <a href={firstDeck.data.photo.src} download>
+                <img src={firstDeck.data.photo.src} width={firstDeck.data.photo.width} height={firstDeck.data.photo.height} alt={firstDeck.data.photo_alt} loading="lazy" />
+              </a>
+              <figcaption>
+                The first panel, exactly as the computer draws it for the Kindle. <a href={firstDeck.data.photo.src} download>Download</a>
+              </figcaption>
+            </figure>
+          )
+        }
+      </aside>
+    </div>
+  </div>
+</Base>

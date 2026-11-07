@@ -1,1 +1,11 @@
 blank_issues_enabled: true
+contact_links:
+  - name: A question or an idea
+    url: https://github.com/enzovalley9/streamdeckify/discussions
+    about: Ask anything, or float an idea before building it.
+  - name: Show something you built on top
+    url: https://github.com/enzovalley9/streamdeckify/discussions/categories/show-and-tell
+    about: A client, an app, a fork or a hardware build. It can go on the wall too.
+  - name: Writing about Streamdeckify?
+    url: https://streamdeckify.org/press/
+    about: Facts, images and a contact for articles and videos.

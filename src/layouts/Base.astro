@@ -4,7 +4,8 @@ import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
 import Icon from '../components/Icon.astro';
-import { NAME, TAGLINE, DESCRIPTION, REPO_URL, CONTACT_EMAIL, CREATOR, HASHTAG } from '../site';
+import { NAME, TAGLINE, DESCRIPTION, SITE_URL, REPO_URL, CONTACT_EMAIL, CREATOR, HASHTAG } from '../site';
+import { repoStats, compact, SHOW_STARS_FROM } from '../lib/github';
 
 interface Props {
   title?: string;
@@ -15,6 +16,31 @@ const { title, description = DESCRIPTION } = Astro.props;
 const fullTitle = title ? `${title} · ${NAME}` : `${NAME}: ${TAGLINE}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL('/og.png', Astro.site);
+const stats = await repoStats();
+const stars = stats && stats.stars >= SHOW_STARS_FROM ? compact(stats.stars) : null;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'WebSite', '@id': `${SITE_URL}/#website`, url: `${SITE_URL}/`, name: NAME, description: DESCRIPTION, inLanguage: 'en' },
+    {
+      '@type': 'SoftwareSourceCode',
+      name: NAME,
+      description: DESCRIPTION,
+      url: `${SITE_URL}/`,
+      codeRepository: REPO_URL,
+      license: 'https://opensource.org/licenses/MIT',
+      isAccessibleForFree: true,
+      author: { '@id': `${SITE_URL}/#creator` },
+    },
+    {
+      '@type': 'Person',
+      '@id': `${SITE_URL}/#creator`,
+      name: CREATOR.name,
+      url: `https://github.com/${CREATOR.github}`,
+      sameAs: [`https://github.com/${CREATOR.github}`, `https://x.com/${CREATOR.x}`],
+    },
+  ],
+};
 ---
 
 <!doctype html>
@@ -39,6 +65,8 @@ const ogImage = new URL('/og.png', Astro.site);
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="A Kindle showing a grid of big buttons, next to the words: Any screen can be a Stream Deck." />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content={`@${CREATOR.x}`} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="Prompts for AI agents" />
   </head>
   <body>
@@ -64,7 +92,7 @@ const ogImage = new URL('/og.png', Astro.site);
           <a href="/#prompts">Prompts</a>
           <a href="/devices/">Devices</a>
           <a href="/#wall">The wall</a>
-          <a class="gh" href={REPO_URL}><Icon name="github" /> GitHub</a>
+          <a class="gh" href={REPO_URL}><Icon name="github" /> GitHub{stars && <span class="count" aria-label={`${stars} stars`}>★ {stars}</span>}</a>
         </nav>
       </div>
     </header>
@@ -93,6 +121,7 @@ const ogImage = new URL('/og.png', Astro.site);
             <a href={REPO_URL}>GitHub</a>
             <a href={`${REPO_URL}/blob/main/CONTRIBUTING.md`}>Contribute</a>
             <a href="/devices/">Devices</a>
+            <a href="/press/">Press kit</a>
             <a href="/llms.txt">llms.txt</a>
             <a href={`https://x.com/hashtag/${HASHTAG}`}>#{HASHTAG}</a>
           </p>

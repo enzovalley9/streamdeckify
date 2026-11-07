@@ -19,6 +19,18 @@ body:
         - Any other screen
     validations:
       required: true
+  - type: dropdown
+    id: stage
+    attributes:
+      label: How far did you get?
+      options:
+        - Before reaching the device (no shell, no page, no connection)
+        - Connected, but the panel doesn't show
+        - The panel shows, but taps don't arrive
+        - Taps arrive, but nothing happens on the computer
+        - Something else
+    validations:
+      required: true
   - type: input
     id: agent
     attributes:

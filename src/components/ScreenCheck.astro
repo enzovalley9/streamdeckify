@@ -1,0 +1,254 @@
+---
+// "Which prompt do I need?" Turns the first question every visitor has into the
+// first click, and sends untested screens to a ready-made issue.
+import { getCollection } from 'astro:content';
+import { PROMPTS } from '../lib/prompts';
+import { NEW_ISSUE } from '../site';
+
+const devices = await getCollection('devices');
+const data = {
+  known: devices.map((d) => ({
+    id: d.id,
+    name: d.data.name,
+    year: d.data.year ?? null,
+    status: d.data.status,
+    prompt: d.data.prompt,
+    summary: d.data.summary,
+  })),
+  tabs: Object.fromEntries(PROMPTS.map((p) => [p.id, p.tab])),
+  issue: NEW_ISSUE('add-device.yml'),
+};
+---
+
+<div class="check">
+  <label for="check-q">Not sure which one? Type your screen.</label>
+  <input
+    id="check-q"
+    type="search"
+    placeholder="Kindle Paperwhite 3, an old iPad, Fire TV..."
+    autocomplete="off"
+    spellcheck="false"
+    enterkeyhint="search"
+  />
+  <div class="check-out" id="check-out" aria-live="polite" hidden>
+    <p class="check-verdict" id="check-verdict"></p>
+    <p class="check-why" id="check-why"></p>
+    <div class="check-actions">
+      <button class="btn small" type="button" id="check-go">Show me that prompt</button>
+      <a class="btn small ghost" id="check-more" href="#" hidden></a>
+    </div>
+  </div>
+  <script type="application/json" id="check-data" set:html={JSON.stringify(data)} />
+</div>
+
+<script>
+  type Known = { id: string; name: string; year: number | null; status: string; prompt: string; summary: string };
+  type Data = { known: Known[]; tabs: Record<string, string>; issue: string };
+  type More = { label: string; href?: string; prompt?: string };
+  type Result = { verdict: string; why: string; prompt: string; more?: More };
+
+  const data: Data = JSON.parse(document.getElementById('check-data')?.textContent ?? '{}');
+  const input = document.getElementById('check-q') as HTMLInputElement;
+  const out = document.getElementById('check-out') as HTMLElement;
+  const verdictEl = document.getElementById('check-verdict') as HTMLElement;
+  const whyEl = document.getElementById('check-why') as HTMLElement;
+  const go = document.getElementById('check-go') as HTMLButtonElement;
+  const more = document.getElementById('check-more') as HTMLAnchorElement;
+
+  const words = (s: string) =>
+    s
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .split(/[^a-z0-9]+/)
+      .filter(Boolean);
+  const report = (q: string): More => ({
+    label: 'Be the first to report back',
+    href: `${data.issue}&title=${encodeURIComponent(`Device: ${q}`)}`,
+  });
+  const untested = 'Should work. Nobody has reported one yet.';
+
+  const RULES: [RegExp, (q: string) => Result][] = [
+    [
+      /\bkindle\s*(?:[1-5]\b|dx\b|keyboard\b|non.?touch)|\bk[345]\b/,
+      (q) => ({
+        verdict: 'Nobody has done one yet.',
+        why: 'No touchscreen, so the 5-way pad moves between the buttons. Start from the universal prompt; your agent can borrow the e-ink tricks from the Kindle recipe.',
+        prompt: 'any-screen',
+        more: report(q),
+      }),
+    ],
+    [
+      /kindle|paperwhite|voyage|oasis|scribe|colorsoft/,
+      () => ({
+        verdict: 'Very likely.',
+        why: "Same recipe as the verified Paperwhite 2. If your firmware can be jailbroken (kindlemodding.org says which), use the Kindle prompt. If it can't, the other one uses the Kindle's own web browser.",
+        prompt: 'kindle',
+        more: { label: 'No jailbreak instead', prompt: 'kindle-no-jailbreak' },
+      }),
+    ],
+    [
+      /kobo|clara|libra|elipsa|tolino|pocketbook|boox|onyx|nook|remarkable|e-?reader|e-?ink|ebook/,
+      (q) => ({
+        verdict: untested,
+        why: 'Use the universal prompt. If your reader runs KOReader, the Kindle recipe is a close cousin and your agent can borrow from it.',
+        prompt: 'any-screen',
+        more: report(q),
+      }),
+    ],
+    [
+      /ipad|iphone|ipod|\bios\b/,
+      (q) => ({
+        verdict: untested,
+        why: 'Use the universal prompt. Safari opens the deck, even on old iOS, and adding it to the home screen hides the address bar.',
+        prompt: 'any-screen',
+        more: report(q),
+      }),
+    ],
+    [
+      /apple\s*tv|roku/,
+      () => ({
+        verdict: 'Not directly.',
+        why: 'It has no web browser, and the universal prompt needs one. A cheap Android TV or Fire TV stick on the same TV would do it.',
+        prompt: 'any-screen',
+      }),
+    ],
+    [
+      /\btv\b|tele|chromecast|fire\s*stick|shield|android\s*tv|google\s*tv|webos|tizen|bravia/,
+      (q) => ({
+        verdict: 'Should work, with the remote. Nobody has reported one yet.',
+        why: 'Use the universal prompt: the arrows move between the buttons and OK presses one.',
+        prompt: 'any-screen',
+        more: report(q),
+      }),
+    ],
+    [
+      /steam\s*deck/,
+      (q) => ({
+        verdict: untested,
+        why: 'It runs a full desktop browser, so the universal prompt has everything it needs. A Steam Deck as a Stream Deck: somebody has to do it.',
+        prompt: 'any-screen',
+        more: report(q),
+      }),
+    ],
+    [
+      /android|galaxy|pixel|xiaomi|redmi|huawei|oneplus|motorola|lenovo|fire\s*(?:hd|tablet)|tablet|phone|movil/,
+      (q) => ({
+        verdict: untested,
+        why: 'Use the universal prompt. Any browser works, and kiosk mode makes it feel like real hardware.',
+        prompt: 'any-screen',
+        more: report(q),
+      }),
+    ],
+    [
+      /raspberry|\bpi\b|esp32|arduino/,
+      (q) => ({
+        verdict: untested,
+        why: 'Use the universal prompt: a browser in kiosk mode on a touch display, or physical buttons wired to the board.',
+        prompt: 'any-screen',
+        more: report(q),
+      }),
+    ],
+    [
+      /nintendo|switch|vita|psp|3ds|\bds\b|playstation|xbox|console/,
+      (q) => ({
+        verdict: 'Maybe.',
+        why: 'If it has a web browser, the universal prompt can use it. Nobody has tried one yet.',
+        prompt: 'any-screen',
+        more: report(q),
+      }),
+    ],
+    [
+      /monitor|laptop|macbook|chromebook|surface|computer|\bpc\b|screen|display/,
+      (q) => ({
+        verdict: 'Should work.',
+        why: 'If it can open a web page, use the universal prompt.',
+        prompt: 'any-screen',
+        more: report(q),
+      }),
+    ],
+  ];
+
+  function fromKnown(q: string): Result | undefined {
+    const qw = words(q);
+    for (const k of data.known) {
+      const kw = words(`${k.name} ${k.year ?? ''}`);
+      if (qw.filter((w) => /\d/.test(w)).some((n) => !kw.includes(n))) continue;
+      const exact = kw.filter((w) => !/^\d{4}$/.test(w)).every((w) => qw.includes(w));
+      const partial = qw.length >= 2 && qw.every((w) => kw.includes(w));
+      if (!exact && !partial) continue;
+      const name = k.year ? `${k.name} (${k.year})` : k.name;
+      const verdict =
+        k.status === 'verified'
+          ? exact
+            ? 'Yes. It is verified.'
+            : 'Very likely.'
+          : k.status === 'works'
+            ? 'Yes. It works for someone.'
+            : 'Partly. Someone is on it.';
+      return {
+        verdict,
+        why: exact ? `${name}: ${k.summary}` : `The ${name} is verified, and similar models follow the same recipe. ${k.summary}`,
+        prompt: k.prompt,
+        more: { label: 'How it went', href: `/devices/${k.id}/` },
+      };
+    }
+  }
+
+  function answer(raw: string): Result {
+    const q = words(raw).join(' ');
+    const known = fromKnown(raw);
+    if (known) return known;
+    for (const [re, make] of RULES) if (re.test(q)) return make(raw.trim());
+    return {
+      verdict: 'Probably, if it can open a web page.',
+      why: "Use the universal prompt. If it can't open one, tell us what it is and we'll look for another way together.",
+      prompt: 'any-screen',
+      more: report(raw.trim()),
+    };
+  }
+
+  const showPrompt = (id: string) => {
+    document.getElementById(`tab-${id}`)?.click();
+    const panel = document.getElementById(`panel-${id}`);
+    panel?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    panel?.querySelector<HTMLButtonElement>('[data-copy]')?.focus({ preventScroll: true });
+  };
+
+  let current: Result | undefined;
+  let timer = 0;
+  const render = () => {
+    const raw = input.value;
+    if (raw.trim().length < 2) {
+      out.hidden = true;
+      current = undefined;
+      return;
+    }
+    current = answer(raw);
+    verdictEl.textContent = current.verdict;
+    whyEl.textContent = current.why;
+    const m = current.more;
+    more.hidden = !m;
+    if (m) {
+      more.textContent = m.label;
+      more.href = m.href ?? `#panel-${m.prompt}`;
+      more.dataset.prompt = m.prompt ?? '';
+    }
+    out.hidden = false;
+  };
+
+  input.addEventListener('input', () => {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(render, 120);
+  });
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && current) showPrompt(current.prompt);
+  });
+  go.addEventListener('click', () => current && showPrompt(current.prompt));
+  more.addEventListener('click', (e) => {
+    const id = more.dataset.prompt;
+    if (!id) return;
+    e.preventDefault();
+    showPrompt(id);
+  });
+</script>

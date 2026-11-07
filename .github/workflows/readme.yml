@@ -1,0 +1,38 @@
+name: README table
+
+# Rewrites the devices table in README.md after a device changes on main, so
+# contributors never have to touch it and never hit conflicts over it.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/content/devices/**'
+      - 'src/lib/wanted.ts'
+      - 'scripts/readme.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: readme
+  cancel-in-progress: false
+
+jobs:
+  readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run readme
+      - name: Commit the table if it changed
+        run: |
+          if git diff --quiet README.md; then echo "README.md is up to date"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "README: rewrite the devices table"
+          git push

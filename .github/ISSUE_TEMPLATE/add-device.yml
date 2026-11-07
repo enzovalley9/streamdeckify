@@ -32,11 +32,12 @@ body:
   - type: dropdown
     id: result
     attributes:
-      label: How did it go?
+      label: How far did you get?
       options:
-        - It works
-        - It partly works
-        - It didn't work
+        - It works, I use it every day
+        - The panel shows up, but taps or buttons don't work yet
+        - I couldn't get the panel on the screen
+        - Something broke (tell us below)
     validations:
       required: true
   - type: input

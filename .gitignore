@@ -5,3 +5,9 @@ dist/
 *.log
 .env
 .env.*
+
+# Agent and editor config never goes in the repo (see AGENTS.md)
+.claude/
+.codex/
+.cursor/
+.gemini/

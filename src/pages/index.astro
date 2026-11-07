@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import DeckDemo from '../components/DeckDemo.astro';
 import PromptTabs from '../components/PromptTabs.astro';
+import ScreenCheck from '../components/ScreenCheck.astro';
 import DeviceCard from '../components/DeviceCard.astro';
 import DeckCard from '../components/DeckCard.astro';
 import Icon from '../components/Icon.astro';
@@ -16,6 +17,9 @@ const devices = (await getCollection('devices')).sort(
 );
 const decks = (await getCollection('decks')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 const verified = devices.filter((d) => d.data.status === 'verified').length;
+// The story's device. Its numbers come from its file, never typed here.
+const first = devices.find((d) => d.id === 'kindle-paperwhite-2') ?? devices[0];
+const ms = first.data.latency_ms;
 const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
 ---
 
@@ -34,7 +38,7 @@ const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
           <button class="btn" type="button" data-copy="#one-kindle"><Icon name="copy" /><span>Copy the Kindle prompt</span></button>
           <a class="btn ghost" href="#prompts">Other screens <Icon name="down" /></a>
         </div>
-        <p class="proof">Built first on a 2013 Kindle Paperwhite. About 200 ms from tap to app.</p>
+        <p class="proof">Built first on a {first.data.name} from {first.data.year}. About {ms} ms from tap to app.</p>
       </div>
       <DeckDemo />
     </div>
@@ -42,7 +46,7 @@ const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
 
   <div class="wrap">
     <div class="stats">
-      <div class="stat"><b>200 ms</b><span>or so, from tap to app on a 2013 Kindle</span></div>
+      <div class="stat"><b>{ms} ms</b><span>or so, from tap to app on a {first.data.year} {first.data.name}</span></div>
       <div class="stat"><b>{PROMPTS.length}</b><span>prompts, one of them for any screen</span></div>
       <div class="stat"><b>{verified}</b><span>{plural(verified, 'screen verified so far', 'screens verified so far')}</span></div>
       <div class="stat"><b>0</b><span>servers in the cloud</span></div>
@@ -95,7 +99,7 @@ const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
         <div class="node"><Icon name="ereader" /><b>Your old screen</b><span>shows the panel, says where you tapped</span></div>
         <div class="wire">Wi-Fi + token<br />tap at 412, 690</div>
         <div class="node"><Icon name="computer" /><b>Your computer</b><span>a tiny server with a fixed list of actions</span></div>
-        <div class="wire">about 200 ms</div>
+        <div class="wire">about {ms} ms</div>
         <div class="node"><Icon name="sparkle" /><b>The action</b><span>an app, a shortcut, music, lights</span></div>
       </div>
     </div>
@@ -111,6 +115,7 @@ const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
           No web access? Copy the full version instead. Read it first if you like: it's plain English.
         </p>
       </div>
+      <ScreenCheck />
       <PromptTabs />
     </div>
   </section>

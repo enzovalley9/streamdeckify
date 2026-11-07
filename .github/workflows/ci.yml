@@ -19,6 +19,8 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
+      # Ground rules in the prompts, nothing private, no stray dashes.
+      - run: npm run check
       # Fails if any device or deck has a wrong or missing field.
       - run: npm run build
         env:

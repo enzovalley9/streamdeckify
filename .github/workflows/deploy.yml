@@ -1,10 +1,13 @@
 name: Deploy to GitHub Pages
 
-# Runs on every push to main, but only once the repo is public.
-# While it's private, both jobs are skipped.
+# Off until the site goes public. To switch it on:
+#   gh variable set PAGES_LIVE --body true
+# The hourly run keeps the GitHub numbers on the site fresh.
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: '17 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -18,13 +21,15 @@ concurrency:
 
 jobs:
   build:
-    if: ${{ !github.event.repository.private }}
+    if: ${{ vars.PAGES_LIVE == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - uses: withastro/action@v6
         env:
           ASTRO_TELEMETRY_DISABLED: 1
+          # Read-only use: the star count shown in the header.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
     needs: build
