@@ -3,7 +3,7 @@ title: A Mac mini's new control panel
 device: Kindle Paperwhite 2 (2013)
 recipe: kindle-paperwhite-2
 computer: macos
-author: Enzo Vale
+author: Enzo Valley
 github: enzovalley9
 photo: ./enzo-kindle-pw2-mac.png
 photo_kind: screenshot

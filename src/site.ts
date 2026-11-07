@@ -15,12 +15,13 @@ export const REPO_URL = `https://github.com/${REPO}`;
 export const NEW_ISSUE = (template: string, title = '') =>
   `${REPO_URL}/issues/new?template=${template}${title ? `&title=${encodeURIComponent(title)}` : ''}`;
 
-// TODO(contact): set up forwarding for this address when the domain is bought.
-export const CONTACT_EMAIL = `hello@${DOMAIN}`;
+// Enzo's own address for now. TODO(contact): once the domain exists, switch to
+// hello@<domain> with forwarding, so the personal address isn't published.
+export const CONTACT_EMAIL = 'hello@streamdeckify.org';
 
 export const HASHTAG = 'streamdeckify';
 export const CREATOR = {
-  name: 'Enzo Vale',
+  name: 'Enzo Valley',
   github: 'enzovalley9',
   x: 'enzovalley9',
 };
