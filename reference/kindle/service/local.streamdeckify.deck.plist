@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  The Streamdeckify server as a launchd agent on macOS: it starts at login and
+  restarts if it dies. DECK_DIR stands for the absolute path of the folder with
+  server/ and config/. Use the same Python that has Pillow and that the firewall
+  lets in. Install it from that folder, after asking:
+    mkdir -p logs ~/Library/LaunchAgents
+    sed "s#DECK_DIR#$PWD#g" service/local.streamdeckify.deck.plist > ~/Library/LaunchAgents/local.streamdeckify.deck.plist
+    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/local.streamdeckify.deck.plist
+  Restart: launchctl kickstart -k gui/$(id -u)/local.streamdeckify.deck
+  Undo:    launchctl bootout gui/$(id -u)/local.streamdeckify.deck
+           rm ~/Library/LaunchAgents/local.streamdeckify.deck.plist
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>local.streamdeckify.deck</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>DECK_DIR/server/deck_server.py</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>DECK_DIR</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>ThrottleInterval</key>
+    <integer>5</integer>
+    <key>StandardOutPath</key>
+    <string>DECK_DIR/logs/launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>DECK_DIR/logs/launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin</string>
+    </dict>
+</dict>
+</plist>

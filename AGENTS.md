@@ -6,7 +6,7 @@ Instructions for the AI coding agents that open this repo: Claude Code, Codex, G
 
 | The person wants to... | Do this |
 | --- | --- |
-| Turn their own screen into a deck | Open the matching recipe in `prompts/` and follow it on their real device and computer, one step at a time. You don't need to change this repo for that. Don't open issues or pull requests unless the person asks you to. |
+| Turn their own screen into a deck | Open the matching recipe in `prompts/` and follow it on their real device and computer, one step at a time. The Kindle recipe starts from the first deck's code in `reference/kindle/`: copy it out of the repo and adapt the copy. You don't need to change this repo for that. Don't open issues or pull requests unless the person asks you to. |
 | Change this repo: add a device, a deck, a prompt fix or a website change | Read the rest of this file first. |
 
 ## Map
@@ -14,6 +14,7 @@ Instructions for the AI coding agents that open this repo: Claude Code, Codex, G
 | Path | What it is |
 | --- | --- |
 | `prompts/` | The recipes. They are the product. The website serves them as plain text too. |
+| `reference/kindle/` | Code for the Kindle recipe, from the first deck: the server, the Kindle client, the deploy script and the services. Agents copy it and adapt it. Its README says how. |
 | `src/content/devices/` | One Markdown file per screen model. The schema is in `src/content.config.ts`. |
 | `src/content/decks/` | The wall: one Markdown file and one photo per deck. |
 | `src/lib/wanted.ts` | Screens nobody has done yet. Remove one when it gets a device file. |
@@ -31,6 +32,7 @@ Instructions for the AI coding agents that open this repo: Claude Code, Codex, G
 | A screen someone got working, or tried | One new file in `src/content/devices/` | Start from `docs/templates/device.md`. Status `works` or `experimental`. Only a maintainer sets `verified`. |
 | A deck for the wall | One Markdown file and one photo in `src/content/decks/` | Start from `docs/templates/deck.md`. Photo under 1 MB, taken by the person, nothing private on screen. |
 | A lesson for a recipe | The prompt in `prompts/` | Only what was learned on a real device. Name the device and agent in the pull request. |
+| A fix to the reference code | `reference/kindle/` | Only what was tested on a real Kindle. Keep it in step with `prompts/kindle.md`, and keep its safety checks. |
 | The website | `src/` | Run `npm run build` and look at it at phone width too. |
 
 ## Hard rules

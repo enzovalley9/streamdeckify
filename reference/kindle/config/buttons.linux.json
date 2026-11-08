@@ -1,0 +1,25 @@
+{
+  "name": "linux",
+  "port": 8787,
+  "discovery_port": 8788,
+  "screen": { "width": 758, "height": 1024 },
+  "columns": 3,
+  "rows": 4,
+  "buttons": [
+    { "id": "browser", "label": "Firefox", "type": "app", "value": "firefox" },
+    { "id": "terminal", "label": "Terminal", "type": "command", "value": ["gnome-terminal"] },
+    { "id": "files", "label": "Files", "type": "url", "value": "file:///home" },
+
+    { "id": "playpause", "label": "Play/Pause", "type": "media" },
+    { "id": "next", "label": "Next\ntrack", "type": "command", "value": ["playerctl", "next"] },
+    { "id": "mute", "label": "Mute\nspeakers", "type": "command", "value": ["pactl", "set-sink-mute", "@DEFAULT_SINK@", "toggle"] },
+
+    { "id": "mic", "label": "Mic\non / off", "type": "command", "value": ["pactl", "set-source-mute", "@DEFAULT_SOURCE@", "toggle"] },
+    { "id": "lock", "label": "Lock", "type": "command", "value": ["loginctl", "lock-session"] },
+    { "id": "code", "label": "VS Code", "type": "app", "value": "code" },
+
+    null,
+    { "id": "refresh", "label": "Refresh", "type": "refresh" },
+    { "id": "exit", "label": "Exit", "type": "exit" }
+  ]
+}

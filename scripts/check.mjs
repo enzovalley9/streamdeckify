@@ -39,7 +39,7 @@ for (const name of prompts) {
 }
 
 // 2 and 3. Private data and dashes, line by line.
-const TEXT = /\.(md|astro|ts|mjs|yml|yaml|json|css|txt)$/;
+const TEXT = /\.(md|astro|ts|mjs|yml|yaml|json|css|txt|py|lua|sh|swift|plist|service)$/;
 const IPV4 = /(?<![\d.])(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})(?![\d.])/g;
 const isPrivate = (a, b) =>
   a === 10 || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168) || (a === 169 && b === 254) || (a === 100 && b >= 64 && b <= 127);

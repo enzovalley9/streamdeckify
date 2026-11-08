@@ -1,0 +1,22 @@
+# The Streamdeckify server as a systemd user service on Linux: it starts at
+# login and restarts if it dies. %h is your home folder: change
+# %h/streamdeckify if the folder with server/ and config/ lives elsewhere, and
+# use the Python that has Pillow. Install it, after asking:
+#   mkdir -p ~/.config/systemd/user
+#   cp service/streamdeckify.service ~/.config/systemd/user/
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now streamdeckify
+# Logs: journalctl --user -u streamdeckify, and logs/server.log
+# Undo: systemctl --user disable --now streamdeckify, then delete the file.
+[Unit]
+Description=Streamdeckify deck server
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/python3 %h/streamdeckify/server/deck_server.py
+WorkingDirectory=%h/streamdeckify
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=default.target

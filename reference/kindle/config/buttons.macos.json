@@ -1,0 +1,25 @@
+{
+  "name": "mac",
+  "port": 8787,
+  "discovery_port": 8788,
+  "screen": { "width": 758, "height": 1024 },
+  "columns": 3,
+  "rows": 4,
+  "buttons": [
+    { "id": "browser", "label": "Safari", "type": "app", "value": "Safari" },
+    { "id": "claude", "label": "Claude", "type": "app", "value": "Claude" },
+    { "id": "terminal", "label": "Terminal", "type": "app", "value": "Terminal" },
+
+    { "id": "messages", "label": "Messages", "type": "app", "value": "Messages" },
+    { "id": "spotlight", "label": "Spotlight\n⌘ space", "type": "key", "value": "cmd+space", "icon": "symbol:magnifyingglass" },
+    { "id": "music", "label": "Music", "type": "app", "value": "Music" },
+
+    { "id": "playpause", "label": "Play/Pause", "type": "media", "icon": "symbol:playpause.fill" },
+    { "id": "screenshot", "label": "Screenshot", "type": "key", "value": "cmd+shift+3", "icon": "symbol:camera.fill" },
+    { "id": "lock", "label": "Lock", "type": "key", "value": "ctrl+cmd+q", "icon": "symbol:lock.fill" },
+
+    { "id": "sleep", "label": "Screen off", "type": "command", "value": ["pmset", "displaysleepnow"], "icon": "symbol:display" },
+    { "id": "refresh", "label": "Refresh", "type": "refresh", "icon": "symbol:arrow.clockwise" },
+    { "id": "exit", "label": "Exit", "type": "exit", "icon": "symbol:rectangle.portrait.and.arrow.right" }
+  ]
+}

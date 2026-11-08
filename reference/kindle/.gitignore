@@ -1,0 +1,5 @@
+# Made when the server runs: the token, your buttons, the logs and drawn icons.
+config/token
+config/buttons.json
+logs/
+cache/
