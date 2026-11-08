@@ -73,7 +73,7 @@ Turn my Kindle into a Stream Deck for this computer. Fetch https://streamdeckify
 
 ## The story
 
-My Kindle Paperwhite is from 2013. The battery is tired and I read on my phone these days, so it was headed for a drawer. One night I asked Claude Code to turn it into a Stream Deck for my Mac. We jailbroke it together, step by step, and it wrote a little server for the Mac and a client for the Kindle. Now it sits under my monitor opening apps, starting dictation and pausing the music, about a fifth of a second after I tap it.
+My Kindle Paperwhite is from 2013. I went back to reading paper books, so it was headed for a drawer. One night I asked Claude Code to turn it into a Stream Deck for my Mac. We jailbroke it together, step by step, and it wrote a little server for the Mac and a client for the Kindle. Now it sits next to my monitor opening apps, starting dictation and pausing the music, about a fifth of a second after I tap it.
 
 This repo is that prompt, cleaned up so anyone can do the same with whatever screen they have lying around. And because every screen is different, the list of devices is written by the people who got theirs working.
 

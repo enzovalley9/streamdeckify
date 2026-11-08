@@ -15,7 +15,7 @@ summary: The first one. Jailbroken with WinterBreak2, a LuaJIT client on the Kin
 updated: 2026-11-07
 ---
 
-The sixth generation Paperwhite, Wi-Fi only. This project started with one: its battery is tired, so it lives plugged in under a monitor and runs a Mac mini and an Ubuntu PC, switching between them with two launchers in the library.
+The sixth generation Paperwhite, Wi-Fi only. This project started with one: it sits next to a monitor and runs a Mac mini and an Ubuntu PC, switching between them with two launchers in the library.
 
 ## What worked
 
