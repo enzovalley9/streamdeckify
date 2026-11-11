@@ -1,6 +1,6 @@
 # Kindle reference code
 
-Code for the [Kindle recipe](../../prompts/kindle.md): a server for the computer, a client for the Kindle, a deploy script and the background services. It comes from the first deck, a [Kindle Paperwhite 2](../../src/content/devices/kindle-paperwhite-2.md) that drives a Mac and an Ubuntu PC, cleaned up and renamed to match the recipe.
+Tested code for the [Kindle recipe](../../prompts/kindle.md): a server for the computer, a client for the Kindle, a deploy script and the background services. It is the first deck's code, cleaned up and renamed to match the recipe, and it runs on that [Kindle Paperwhite 2](../../src/content/devices/kindle-paperwhite-2.md) with a Mac.
 
 Your agent copies it and changes only what your Kindle and your computer need, instead of writing everything from scratch.
 
@@ -50,6 +50,7 @@ Your agent copies it and changes only what your Kindle and your computer need, i
 - **Local network only.** The server answers only addresses on the local network (10.x, 172.16 to 172.31, 192.168.x, link-local) and the computer itself, over HTTP and UDP. It listens on every interface so it keeps working when its IP changes. Set `listen` to the computer's Wi-Fi address to bind only there.
 - **Plain words.** Button ids and types end up in file names and commands on the Kindle, so both sides accept only letters, digits, `_` and `-`.
 - **Discovery trusts the network.** The Kindle sends its token to whichever computer answers discovery with the right name. On a network you don't trust, set `DECK_URL` and `DECK_DISCOVERY=0` in the Kindle's config.
+- **The token on the Kindle.** `/mnt/us` is the drive the Kindle shows over USB, and file permissions don't apply there, so anyone who plugs the Kindle in can read its config. To change the token, delete `config/token`, restart the server and run `deploy.sh` again.
 
 ## Adapt it
 
@@ -85,7 +86,7 @@ curl -s -H "X-Token: $(cat config/token)" -o panel.png http://127.0.0.1:8787/pan
 5. If the computer's firewall is on, the person lets that Python accept incoming connections. Tell them where to click; don't change it yourself.
 6. Once it works, install the service from `service/`, after asking. Each file has its install and undo commands at the top.
 
-Edits to the buttons apply while it runs. Changes to `name`, `listen` or the ports need a restart. The log is `logs/server.log`, with every tap and how long each action took.
+Edits to the buttons apply while it runs, from the next request on. Changes to `name`, `listen` or the ports need a restart. After changing `name`, `port` or `discovery_port`, run `deploy.sh` again: it passes them to the Kindle. Other ports let it run next to another server. The log is `logs/server.log`, with every tap and how long each action took.
 
 ### The Kindle
 
@@ -124,8 +125,8 @@ Keys: `cmd`, `option`, `ctrl` and `shift` with one letter, digit, `space`, `retu
 
 ## Gotchas we already paid for
 
-- **macOS keys.** Key presses need the Accessibility permission. The server gives it to the helper app "Streamdeckify Keys", which it builds into `cache/` the first time. Given to Python, it didn't stick: launchd often runs a different Python from the one listed in System Settings. Rebuilding the helper changes its signature, so it needs the permission again.
-- **macOS screenshots.** `screencapture` from a background service needs Screen Recording. Pressing `cmd+shift+3` doesn't.
+- **macOS keys.** Key presses need the Accessibility permission. The server gives it to the helper app "Streamdeckify Keys", which it builds into `cache/` the first time. The first press only asks for the permission: once it's on, press the button again. Given to Python, it didn't stick: launchd often runs a different Python from the one listed in System Settings. Rebuilding the helper changes its signature, so it needs the permission again.
+- **macOS screenshots.** `screencapture` from a background service needs Screen Recording. Pressing `cmd+shift+3` doesn't, and `cmd+shift+5` opens the tool to pick an area. Both save where macOS is set to, which can be the clipboard instead of a file.
 - **macOS Automation.** `media` drives Spotify or Music with AppleScript. The first time, macOS asks to let the server control each app.
 - **macOS icons.** `app:` icons come from the app's `.icns` file. An app without one gets a button with text only, and the log says why.
 - **Linux keys.** `xdotool` needs an X11 session. If key buttons work from a terminal but not from the service, the service is missing `DISPLAY`.
@@ -138,5 +139,5 @@ Keys: `cmd`, `option`, `ctrl` and `shift` with one letter, digit, `space`, `retu
 
 ## Not tested yet
 
-- This cleaned-up version on a Kindle. The code it comes from runs on the Paperwhite 2, and this version was tested on a computer with stand-ins for the Kindle's commands.
+- Linux with this version. The code it comes from runs on Ubuntu, but this version has only run with a Mac so far.
 - Other Kindles, and Windows. If you get one working, tell us in a device file: the recipe explains how.
