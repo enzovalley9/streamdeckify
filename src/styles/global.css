@@ -8,6 +8,7 @@
   --ink: #141414;
   --ink-2: #4a4944;
   --ink-3: #77756d;
+  --heart: #cc3d36;
   --line: #d7d3c7;
   --device: #1c1c1b;
   --device-edge: #303030;
@@ -30,6 +31,7 @@
     --ink: #ecebe5;
     --ink-2: #b6b3a9;
     --ink-3: #8a877e;
+    --heart: #f0675f;
     --line: #2f2e2a;
     --device: #0a0a09;
     --device-edge: #2a2a28;
@@ -57,6 +59,7 @@ a:hover { text-decoration-thickness: 2px; }
 
 .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
 .skip { position: absolute; left: -9999px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .skip:focus { left: 16px; top: 12px; z-index: 50; background: var(--ink); color: var(--paper); padding: 8px 14px; border-radius: 8px; }
 
 h1, h2, h3 {
@@ -385,6 +388,32 @@ a.card:hover { border-color: var(--ink); text-decoration: none; }
 .site-footer .links { display: flex; flex-wrap: wrap; gap: 10px 22px; }
 .legal { font-size: 0.82rem; color: var(--ink-3); }
 @media (max-width: 780px) { .site-footer .cols { grid-template-columns: 1fr; } }
+
+/* The signature at the very bottom, the same on every site of the maker */
+.site-footer .signature { margin: 40px 0 0; padding-top: 24px; border-top: 1px solid var(--line); text-align: center; font-size: 0.88rem; color: var(--ink-3); }
+.signature a { color: var(--ink-2); font-weight: 600; text-decoration: none; }
+.signature a:hover { color: var(--ink); text-decoration: underline; }
+.heart { display: inline-block; width: 1.05em; height: 1.05em; margin: 0 0.1em; vertical-align: -0.17em; fill: var(--heart); transform-origin: center; }
+.signature:hover .heart { animation: beat 0.9s ease-in-out 2; }
+@keyframes beat { 0%, 100% { transform: scale(1); } 30% { transform: scale(1.22); } 60% { transform: scale(0.96); } }
+@media (prefers-reduced-motion: reduce) { .signature:hover .heart { animation: none; } }
+
+/* Buy me a coffee */
+.coffee { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 16px; }
+.coffee-card .addr { display: block; font: 0.84rem/1.45 var(--font-mono); overflow-wrap: anywhere; user-select: all; -webkit-user-select: all; background: var(--paper-2); padding: 10px 12px; border-radius: var(--radius-sm); }
+.coffee-card p { font-size: 0.9rem; }
+.coffee-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 6px; }
+.qr-open { display: none; }
+.js .qr-open { display: inline-flex; }
+.qr-dialog { width: min(92vw, 340px); padding: 22px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); color: var(--ink); }
+.qr-dialog[open] { display: flex; flex-direction: column; gap: 12px; }
+.qr-dialog::backdrop { background: rgb(0 0 0 / 0.5); }
+.qr-dialog .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.qr-dialog .addr { display: block; font: 0.84rem/1.45 var(--font-mono); overflow-wrap: anywhere; user-select: all; -webkit-user-select: all; }
+.qr-dialog p { margin: 0; color: var(--ink-2); font-size: 0.9rem; }
+.qr-dialog form { margin: 4px 0 0; }
+.qr-code { padding: 12px; background: #fff; border-radius: var(--radius-sm); }
+.qr-code svg { width: 100%; height: auto; }
 
 /* Device pages */
 .page-head { padding: clamp(36px, 6vw, 72px) 0 28px; }

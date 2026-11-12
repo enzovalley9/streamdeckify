@@ -22,4 +22,38 @@ export const CREATOR = {
   name: 'Enzo Valley',
   github: 'enzovalley9',
   x: 'enzovalley9',
+  city: 'Madrid',
 };
+
+// "Buy me a coffee" on the home page. Public addresses only.
+// Ethereum and Hedera share one key, so they share the 0x address.
+export const COFFEE = [
+  {
+    id: 'btc',
+    name: 'Bitcoin',
+    ticker: 'BTC',
+    address: 'bc1qmvs38k59qfs8m5la4jrgulmx897zvdncppwdmv',
+    note: 'Bitcoin network only.',
+  },
+  {
+    id: 'eth',
+    name: 'Ethereum',
+    ticker: 'ETH',
+    address: '0x94ac32EdBb54236B3E8A52E9fe49c157315eE645',
+    note: 'Ethereum, or any EVM network like Base or Arbitrum.',
+  },
+  {
+    id: 'sol',
+    name: 'Solana',
+    ticker: 'SOL',
+    address: 'Byojjj99pPPbdNEcSYXrkefhiZ2ZhUBtdafrMQAMvaRd',
+    note: 'SOL or USDC on Solana.',
+  },
+  {
+    id: 'hbar',
+    name: 'Hedera',
+    ticker: 'HBAR',
+    address: '0x94ac32EdBb54236B3E8A52E9fe49c157315eE645',
+    note: 'Hedera reads this EVM address. Send from a Hedera wallet like HashPack.',
+  },
+] as const;

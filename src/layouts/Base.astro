@@ -105,8 +105,8 @@ const jsonLd = {
       <div class="wrap cols">
         <div>
           <p>
-            <b>{NAME}</b> is free and open source (MIT). Made by <a href={`https://x.com/${CREATOR.x}`}>{CREATOR.name}</a>
-            and <a href={`${REPO_URL}/graphs/contributors`}>everyone who sent a pull request</a>.
+            <b>{NAME}</b> is free and open source (MIT), with help from{' '}
+            <a href={`${REPO_URL}/graphs/contributors`}>everyone who sent a pull request</a>.
           </p>
           <p class="legal">
             Independent community project. Not affiliated with, endorsed by or sponsored by Elgato or Corsair.
@@ -123,9 +123,16 @@ const jsonLd = {
             <a href="/devices/">Devices</a>
             <a href="/press/">Press kit</a>
             <a href="/llms.txt">llms.txt</a>
+            <a href="/#coffee">Buy me a coffee</a>
             <a href={`https://x.com/hashtag/${HASHTAG}`}>#{HASHTAG}</a>
           </p>
         </div>
+      </div>
+      <div class="wrap">
+        <p class="signature">
+          Made with{' '}<svg class="heart" viewBox="0 0 24 24" role="img" aria-label="love"><path d="M12 20.6S3 15.2 3 8.9C3 6.1 5.1 4 7.7 4c1.8 0 3.3 1 4.3 2.6C13 5 14.5 4 16.3 4 18.9 4 21 6.1 21 8.9c0 6.3-9 11.7-9 11.7z" /></svg>{' '}in {CREATOR.city} by{' '}
+          <a href={`https://github.com/${CREATOR.github}`} rel="author">{CREATOR.name}</a>
+        </p>
       </div>
     </footer>
   </body>

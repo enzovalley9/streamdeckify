@@ -6,6 +6,7 @@ import PromptTabs from '../components/PromptTabs.astro';
 import ScreenCheck from '../components/ScreenCheck.astro';
 import DeviceCard from '../components/DeviceCard.astro';
 import DeckCard from '../components/DeckCard.astro';
+import Coffee from '../components/Coffee.astro';
 import Icon from '../components/Icon.astro';
 import { PROMPTS } from '../lib/prompts';
 import { WANTED } from '../lib/wanted';
@@ -271,6 +272,17 @@ const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
           <p>Found a gotcha the hard way? Save the next person the trouble.</p>
         </a>
       </div>
+    </div>
+  </section>
+
+  <section class="band" id="coffee">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><span class="dot"></span>Buy me a coffee</span>
+        <h2>Saved you a Stream Deck?</h2>
+        <p>Streamdeckify is free and it stays free. If your old screen is a deck now and you feel like saying thanks, a coffee in crypto makes my day. Pick a network and copy the address.</p>
+      </div>
+      <Coffee />
     </div>
   </section>
 </Base>

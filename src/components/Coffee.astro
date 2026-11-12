@@ -1,0 +1,78 @@
+---
+// The donation addresses: a copy button for each, and a QR code drawn at build time.
+import { renderSVG } from 'uqr';
+import Icon from './Icon.astro';
+import { COFFEE } from '../site';
+
+// Dark modules on white whatever the theme: phone cameras read that best.
+const qr = (address: string) => renderSVG(address, { ecc: 'M', border: 2, pixelSize: 8 });
+---
+
+<div class="coffee">
+  {COFFEE.map((c) => (
+    <div class="card coffee-card">
+      <div class="top">
+        <h3>{c.name}</h3>
+        <span class="tag">{c.ticker}</span>
+      </div>
+      <code class="addr" id={`addr-${c.id}`} translate="no">{c.address}</code>
+      <p>{c.note}</p>
+      <div class="coffee-actions">
+        <button class="btn small" type="button" data-copy-address={c.address} data-source={`addr-${c.id}`}>
+          <Icon name="copy" /><span>Copy</span><span class="sr-only"> the {c.name} address</span>
+        </button>
+        <button class="btn small ghost qr-open" type="button" data-qr={`qr-${c.id}`} aria-haspopup="dialog" aria-label={`Show the ${c.name} QR code`}>
+          <Icon name="qr" /><span>QR</span>
+        </button>
+      </div>
+      <dialog class="qr-dialog" id={`qr-${c.id}`} aria-labelledby={`qr-${c.id}-title`}>
+        <div class="top">
+          <h3 id={`qr-${c.id}-title`}>{c.name}</h3>
+          <span class="tag">{c.ticker}</span>
+        </div>
+        <div class="qr-code" set:html={qr(c.address)} />
+        <code class="addr" translate="no">{c.address}</code>
+        <p>{c.note}</p>
+        <form method="dialog"><button class="btn small ghost">Close</button></form>
+      </dialog>
+    </div>
+  ))}
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-address]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const label = btn.querySelector('span') ?? btn;
+      const before = label.textContent;
+      try {
+        await navigator.clipboard.writeText(btn.dataset.copyAddress ?? '');
+        label.textContent = 'Copied';
+      } catch {
+        const source = document.getElementById(btn.dataset.source ?? '');
+        if (source) {
+          const range = document.createRange();
+          range.selectNodeContents(source);
+          const sel = window.getSelection();
+          sel?.removeAllRanges();
+          sel?.addRange(range);
+        }
+        label.textContent = 'Selected. Press Ctrl+C or ⌘C';
+      }
+      btn.classList.add('is-done');
+      window.setTimeout(() => {
+        btn.classList.remove('is-done');
+        label.textContent = before;
+      }, 2200);
+    });
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('[data-qr]').forEach((btn) => {
+    const dialog = document.getElementById(btn.dataset.qr ?? '') as HTMLDialogElement | null;
+    if (!dialog) return;
+    btn.addEventListener('click', () => dialog.showModal());
+    // A click on the backdrop closes it too.
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+  });
+</script>
