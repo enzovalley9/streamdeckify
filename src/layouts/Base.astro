@@ -4,7 +4,7 @@ import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
 import Icon from '../components/Icon.astro';
-import { NAME, TAGLINE, DESCRIPTION, SITE_URL, REPO_URL, CONTACT_EMAIL, CREATOR, HASHTAG } from '../site';
+import { NAME, TAGLINE, DESCRIPTION, SITE_URL, REPO_URL, CONTACT_EMAIL, CREATOR, CREATOR_X_URL, HASHTAG } from '../site';
 import { repoStats, compact, SHOW_STARS_FROM } from '../lib/github';
 
 interface Props {
@@ -37,7 +37,7 @@ const jsonLd = {
       '@id': `${SITE_URL}/#creator`,
       name: CREATOR.name,
       url: `https://github.com/${CREATOR.github}`,
-      sameAs: [`https://github.com/${CREATOR.github}`, `https://x.com/${CREATOR.x}`],
+      sameAs: [`https://github.com/${CREATOR.github}`, CREATOR_X_URL],
     },
   ],
 };
@@ -124,6 +124,7 @@ const jsonLd = {
             <a href="/press/">Press kit</a>
             <a href="/llms.txt">llms.txt</a>
             <a href="/#coffee">Buy me a coffee</a>
+            <a href={CREATOR_X_URL} rel="me">@{CREATOR.x} on X</a>
             <a href={`https://x.com/hashtag/${HASHTAG}`}>#{HASHTAG}</a>
           </p>
         </div>

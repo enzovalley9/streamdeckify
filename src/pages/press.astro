@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import { PROMPTS } from '../lib/prompts';
-import { NAME, REPO_URL, CONTACT_EMAIL, CREATOR, HASHTAG } from '../site';
+import { NAME, REPO_URL, CONTACT_EMAIL, CREATOR, CREATOR_X_URL, HASHTAG } from '../site';
 
 const devices = await getCollection('devices');
 const decks = (await getCollection('decks')).sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
@@ -39,7 +39,7 @@ const pressIssue = `${REPO_URL}/issues/new?title=${encodeURIComponent('Press: ')
           <div><dt>Cloud</dt><dd>None. Local network only, behind a random token</dd></div>
           <div><dt>Made by</dt><dd>{CREATOR.name} in Madrid, and everyone who sends a pull request</dd></div>
           <div><dt>Code</dt><dd><a href={REPO_URL}>{REPO_URL.replace('https://', '')}</a></dd></div>
-          <div><dt>Hashtag</dt><dd>#{HASHTAG}</dd></div>
+          <div><dt>On X</dt><dd><a href={CREATOR_X_URL} rel="me">@{CREATOR.x}</a> and #{HASHTAG}</dd></div>
         </dl>
 
         <h2>Names</h2>

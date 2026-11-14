@@ -24,6 +24,7 @@ export const CREATOR = {
   x: 'enzovalley9',
   city: 'Madrid',
 };
+export const CREATOR_X_URL = `https://x.com/${CREATOR.x}`;
 
 // "Buy me a coffee" on the home page. Public addresses only.
 // Ethereum and Hedera share one key, so they share the 0x address.
